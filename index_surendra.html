@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Commerce Platform – Business Analysis Portfolio | Surendra</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f2b4c;
+  --blue: #1a5aad;
+  --blue-light: #e8f1fb;
+  --teal: #0d9476;
+  --teal-light: #e4f5f1;
+  --amber: #c4780a;
+  --amber-light: #fef4e0;
+  --red: #c0392b;
+  --red-light: #fdf0ee;
+  --purple: #6c3ec0;
+  --purple-light: #f0eafa;
+  --gray: #f4f5f7;
+  --gray2: #e8eaed;
+  --gray3: #9aa0ab;
+  --text: #1e2430;
+  --text2: #4a5160;
+  --white: #fff;
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(15,43,76,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #f0f3f8; color: var(--text); min-height: 100vh; }
+img, svg, video, canvas { max-width: 100%; height: auto; }
+button, input, select { max-width: 100%; }
+
+/* TOP HEADER */
+.top-bar { background: var(--navy); color: #fff; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.top-bar .brand { font-size: 15px; font-weight: 600; letter-spacing: 0.2px; }
+.top-bar .meta { font-size: 12px; color: #94a8c4; display: flex; gap: 20px; }
+.badge-tag { background: #1a5aad; color: #a8c9f5; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+
+/* NAV TABS */
+.nav-tabs { background: var(--white); border-bottom: 1.5px solid var(--gray2); display: flex; gap: 0; padding: 0 32px; overflow-x: auto; }
+.nav-tab { padding: 14px 22px; font-size: 13px; font-weight: 500; color: var(--gray3); cursor: pointer; border-bottom: 2.5px solid transparent; white-space: nowrap; transition: all 0.18s; }
+.nav-tab:hover { color: var(--blue); }
+.nav-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* LAYOUT */
+.layout { display: flex; min-height: calc(100vh - 104px); }
+.sidebar { width: 240px; background: var(--white); border-right: 1.5px solid var(--gray2); padding: 20px 0; flex-shrink: 0; }
+.sidebar-section { padding: 0 16px 16px; }
+.sidebar-label { font-size: 10px; font-weight: 600; color: var(--gray3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--text2); transition: 0.15s; margin-bottom: 2px; }
+.sidebar-item:hover { background: var(--blue-light); color: var(--blue); }
+.sidebar-item.active { background: var(--blue-light); color: var(--blue); font-weight: 600; }
+.sidebar-icon { width: 20px; height: 20px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+.si-blue { background: var(--blue-light); color: var(--blue); }
+.si-teal { background: var(--teal-light); color: var(--teal); }
+.si-amber { background: var(--amber-light); color: var(--amber); }
+.si-purple { background: var(--purple-light); color: var(--purple); }
+.content { flex: 1; padding: 28px 32px; overflow-y: auto; max-width: 900px; }
+
+/* SECTION PAGES */
+.page { display: none; }
+.page.active { display: block; }
+.page-header { margin-bottom: 24px; }
+.page-title { font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--gray3); }
+
+/* CARDS */
+.card { background: var(--white); border-radius: var(--radius); border: 1.5px solid var(--gray2); padding: 20px; margin-bottom: 16px; }
+.card-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.card-title .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-blue { background: var(--blue); }
+.dot-teal { background: var(--teal); }
+.dot-amber { background: var(--amber); }
+.dot-purple { background: var(--purple); }
+.dot-red { background: var(--red); }
+
+/* STAT CARDS */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.stat-card { background: var(--white); border: 1.5px solid var(--gray2); border-radius: var(--radius); padding: 16px; }
+.stat-num { font-size: 26px; font-weight: 600; color: var(--navy); line-height: 1; }
+.stat-label { font-size: 11px; color: var(--gray3); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.6px; }
+.stat-change { font-size: 12px; margin-top: 6px; font-weight: 500; }
+.up { color: var(--teal); } .down { color: var(--red); }
+
+/* TAGS */
+.tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+.tag-amber { background: var(--amber-light); color: var(--amber); }
+.tag-purple { background: var(--purple-light); color: var(--purple); }
+.tag-red { background: var(--red-light); color: var(--red); }
+.tag-gray { background: var(--gray); color: var(--gray3); }
+
+/* TABLES */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; font-size: 11px; font-weight: 600; color: var(--gray3); text-transform: uppercase; letter-spacing: 0.6px; padding: 10px 12px; background: var(--gray); border-bottom: 1.5px solid var(--gray2); }
+td { padding: 11px 12px; border-bottom: 1px solid var(--gray2); color: var(--text2); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafbfc; }
+
+/* USER STORY CARD */
+.us-card { border: 1.5px solid var(--gray2); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; background: var(--white); transition: 0.15s; }
+.us-card:hover { border-color: var(--blue); box-shadow: var(--shadow); }
+.us-id { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--blue); background: var(--blue-light); padding: 2px 8px; border-radius: 5px; display: inline-block; margin-bottom: 8px; }
+.us-story { font-size: 13.5px; color: var(--text); line-height: 1.6; margin-bottom: 10px; }
+.us-ac-title { font-size: 11px; font-weight: 600; color: var(--gray3); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+.us-ac-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.us-ac-list li { font-size: 12px; color: var(--text2); display: flex; align-items: flex-start; gap: 6px; }
+.us-ac-list li::before { content: '✓'; color: var(--teal); font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+.us-footer { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+
+/* FLOW DIAGRAM */
+.flow-wrap { overflow-x: auto; padding: 8px 0; }
+.flow-steps { display: flex; align-items: center; gap: 0; }
+.flow-step { text-align: center; }
+.flow-box { background: var(--blue-light); border: 1.5px solid #b3d1f5; border-radius: 8px; padding: 12px 16px; min-width: 100px; font-size: 12px; font-weight: 500; color: var(--blue); }
+.flow-box.green { background: var(--teal-light); border-color: #9dd9c8; color: var(--teal); }
+.flow-box.amber { background: var(--amber-light); border-color: #f5d296; color: var(--amber); }
+.flow-box.diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); background: var(--purple-light); border: none; min-width: 90px; min-height: 70px; display: flex; align-items: center; justify-content: center; color: var(--purple); font-size: 11px; padding: 10px; }
+.flow-arrow { color: var(--gray3); font-size: 18px; padding: 0 6px; }
+.flow-label { font-size: 10px; color: var(--gray3); margin-top: 4px; }
+
+/* WIREFRAME */
+.wireframe { background: #f8f9fb; border: 2px dashed var(--gray2); border-radius: var(--radius); padding: 16px; }
+.wf-bar { background: var(--navy); border-radius: 6px 6px 0 0; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; color: #fff; font-size: 12px; margin: -16px -16px 14px; }
+.wf-search { background: rgba(255,255,255,0.15); border: none; border-radius: 20px; padding: 6px 14px; color: #fff; font-size: 11px; width: 200px; outline: none; }
+.wf-search::placeholder { color: rgba(255,255,255,0.5); }
+.wf-product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.wf-product { background: var(--white); border-radius: 8px; border: 1px solid var(--gray2); overflow: hidden; }
+.wf-product-img { background: linear-gradient(135deg, #e0e7ef 0%, #c8d5e8 100%); height: 80px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.wf-product-info { padding: 10px; }
+.wf-product-name { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.wf-product-price { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+.wf-btn { background: var(--blue); color: #fff; border: none; border-radius: 5px; padding: 6px 10px; font-size: 10px; font-weight: 600; cursor: pointer; width: 100%; font-family: inherit; }
+.wf-btn:hover { background: var(--navy); }
+.wf-screen-title { font-size: 12px; font-weight: 700; color: var(--text); margin: 18px 0 10px; display: flex; justify-content: space-between; align-items: center; }
+.wf-screen-note { font-size: 10px; font-weight: 500; color: var(--gray3); }
+.wf-row { display: flex; gap: 12px; }
+.wf-col { flex: 1; min-width: 0; }
+.wf-panel { background: var(--white); border: 1px solid var(--gray2); border-radius: 8px; padding: 12px; }
+.wf-hero { background: linear-gradient(135deg, #e0e7ef 0%, #c8d5e8 100%); border-radius: 8px; padding: 22px; min-height: 120px; }
+.wf-line { height: 8px; background: var(--gray2); border-radius: 10px; margin-bottom: 8px; }
+.wf-line.dark { background: var(--gray3); }
+.wf-tile-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.wf-tile { background: var(--white); border: 1px solid var(--gray2); border-radius: 8px; padding: 10px; min-height: 74px; }
+.wf-detail-img { background: linear-gradient(135deg, #e0e7ef 0%, #c8d5e8 100%); border-radius: 8px; min-height: 220px; display:flex; align-items:center; justify-content:center; color:var(--gray3); font-weight:700; }
+.wf-qty { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--gray2); border-radius:5px; padding:4px 8px; font-size:11px; }
+.wf-stepper { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:12px; }
+.wf-step { background:var(--gray); border-radius:6px; padding:8px; font-size:10px; color:var(--text2); text-align:center; font-weight:600; }
+.wf-step.active { background:var(--blue-light); color:var(--blue); }
+
+/* SPRINT BOARD */
+.sprint-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.sprint-col { background: var(--gray); border-radius: 8px; padding: 12px; }
+.sprint-col-title { font-size: 11px; font-weight: 600; color: var(--gray3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+.sprint-count { background: var(--gray2); border-radius: 20px; padding: 1px 7px; font-size: 10px; color: var(--text2); }
+.sprint-card { background: var(--white); border-radius: 7px; border: 1.5px solid var(--gray2); padding: 10px; margin-bottom: 8px; font-size: 12px; cursor: grab; }
+.sprint-card-id { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray3); margin-bottom: 4px; }
+.sprint-card-title { color: var(--text); font-weight: 500; margin-bottom: 6px; }
+.sprint-card-footer { display: flex; justify-content: space-between; align-items: center; }
+.story-points { background: var(--navy); color: #fff; font-size: 10px; border-radius: 4px; padding: 1px 6px; }
+
+/* RTM TABLE */
+.rtm-row-high td:first-child { border-left: 3px solid var(--red); }
+.rtm-row-med td:first-child { border-left: 3px solid var(--amber); }
+.rtm-row-low td:first-child { border-left: 3px solid var(--teal); }
+
+/* STAKEHOLDER */
+.stakeholder-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.sh-card { background: var(--white); border: 1.5px solid var(--gray2); border-radius: var(--radius); padding: 14px; display: flex; gap: 12px; align-items: flex-start; }
+.sh-avatar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.sh-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.sh-role { font-size: 11px; color: var(--gray3); margin-bottom: 6px; }
+.sh-influence { display: flex; gap: 6px; align-items: center; font-size: 11px; color: var(--text2); }
+.sh-bar { height: 4px; flex: 1; background: var(--gray2); border-radius: 2px; }
+.sh-fill { height: 100%; border-radius: 2px; }
+
+/* SCROLL */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--gray2); border-radius: 10px; }
+
+/* PROGRESS */
+.progress-wrap { background: var(--gray2); border-radius: 20px; height: 6px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 20px; }
+.evidence-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.evidence-card { background: var(--white); border: 1.5px solid var(--gray2); border-radius: var(--radius); padding: 14px; }
+.evidence-claim { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.evidence-proof { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.metric-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.metric-box { background: var(--gray); border-radius: 8px; padding: 14px; }
+.metric-value { font-size: 24px; font-weight: 700; color: var(--navy); line-height: 1; }
+.metric-label { font-size: 11px; color: var(--gray3); text-transform: uppercase; letter-spacing: 0.6px; margin-top: 5px; }
+.mini-wireframes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 14px; }
+.mini-wf { background: var(--white); border: 1.5px solid var(--gray2); border-radius: 8px; padding: 10px; min-height: 138px; }
+.mini-wf-title { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.mini-line { height: 7px; background: var(--gray2); border-radius: 10px; margin-bottom: 6px; }
+.mini-block { background: var(--gray); border-radius: 6px; margin-bottom: 7px; }
+.mini-button { height: 14px; background: var(--blue-light); border-radius: 4px; }
+.frd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.frd-box { background: var(--gray); border-radius: 8px; padding: 12px; font-size: 12.5px; color: var(--text2); line-height: 1.55; }
+.frd-box b { color: var(--text); }
+
+/* RESPONSIVE / MOBILE-FIRST OVERRIDES */
+@media (max-width: 767px) {
+  body { overflow-x: hidden; }
+
+  .top-bar {
+    height: auto;
+    min-height: 64px;
+    padding: 12px 16px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .top-bar .brand {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+  .top-bar .meta {
+    width: 100%;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .top-bar .meta span { flex-shrink: 0; }
+
+  .nav-tabs {
+    padding: 0 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-tab {
+    padding: 13px 14px;
+    font-size: 12px;
+  }
+
+  .layout {
+    display: block;
+    min-height: auto;
+  }
+  .sidebar {
+    display: none;
+    width: 100%;
+    border-right: 0;
+    border-bottom: 1.5px solid var(--gray2);
+    padding: 10px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sidebar-section:first-child {
+    display: flex;
+    gap: 6px;
+    padding: 0 12px;
+    min-width: max-content;
+  }
+  .sidebar-section:nth-child(2) { display: none; }
+  .sidebar-label { display: none; }
+  .sidebar-item {
+    margin: 0;
+    padding: 8px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .sidebar-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+
+  .content {
+    width: 100%;
+    max-width: none;
+    padding: 18px 12px 28px;
+    overflow: visible;
+  }
+  .page-header { margin-bottom: 16px; }
+  .page-title { font-size: 18px; line-height: 1.25; }
+  .page-sub { line-height: 1.45; }
+  .card {
+    padding: 15px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+  }
+  .card-title {
+    line-height: 1.35;
+    align-items: flex-start;
+  }
+
+  .stats-row,
+  .metric-strip,
+  .evidence-grid,
+  .frd-grid,
+  .stakeholder-grid,
+  .mini-wireframes,
+  .sprint-board,
+  .wf-product-grid,
+  .wf-tile-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  table {
+    display: block;
+    min-width: 620px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  th, td {
+    padding: 10px;
+    white-space: normal;
+    min-width: 110px;
+  }
+
+  .flow-wrap { padding-bottom: 4px; }
+  .flow-wrap > div,
+  .flow-wrap [style*="display:flex"] {
+    min-width: max-content;
+  }
+  .flow-box { min-width: 92px; padding: 10px 12px; }
+
+  .wireframe { padding: 12px; }
+  .wf-bar {
+    margin: -12px -12px 12px;
+    padding: 10px 12px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .wf-search { width: 100%; }
+  .wf-bar [style*="display:flex"] {
+    width: 100%;
+    gap: 8px !important;
+    flex-wrap: wrap;
+  }
+  .wf-row,
+  .wireframe > [style*="display:flex; gap:14px"],
+  .wireframe > [style*="display:flex; gap: 14px"] {
+    flex-direction: column !important;
+  }
+  .wf-row > [style*="width:"],
+  .wireframe [style*="width:140px"],
+  .wireframe [style*="width:230px"],
+  .wireframe [style*="width:42%"] {
+    width: 100% !important;
+  }
+  .wf-screen-title {
+    gap: 8px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .wf-detail-img { min-height: 160px; }
+  .wf-panel[style*="display:flex"] {
+    align-items: flex-start !important;
+    flex-wrap: wrap;
+  }
+  .wf-panel .wf-product-img { width: 60px !important; }
+  .wf-panel .wf-btn[style*="width:70px"] { width: 100% !important; }
+  .wf-stepper { grid-template-columns: repeat(2, 1fr) !important; }
+  .wf-step { min-height: 36px; }
+
+  .sh-card { padding: 12px; }
+  .mini-wf { min-height: 118px; }
+
+  [style*="display:flex; gap:20px"] {
+    gap: 10px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  .top-bar { padding: 0 20px; }
+  .nav-tabs { padding: 0 20px; }
+  .sidebar { width: 210px; }
+  .content {
+    max-width: none;
+    padding: 24px 20px;
+  }
+  .metric-strip,
+  .mini-wireframes,
+  .sprint-board {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wf-product-grid,
+  .wf-tile-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wf-row { flex-wrap: wrap; }
+  .wf-row > [style*="width:230px"] { width: 100% !important; }
+}
+
+@media (min-width: 1101px) {
+  .content { width: min(100%, 900px); }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="brand">E-Commerce Platform &nbsp;–&nbsp; Business Analysis Portfolio</div>
+  <div class="meta">
+    <span class="badge-tag">BA Project</span>
+    <span>Surendra</span>
+    <span>Tools: Jira · Figma · Draw.io · Excel</span>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="switchTab('overview')">Project Overview</div>
+  <div class="nav-tab" onclick="switchTab('brd')">BRD Summary</div>
+  <div class="nav-tab" onclick="switchTab('validation')">FRD Summary</div>
+  <div class="nav-tab" onclick="switchTab('stories')">User Stories</div>
+  <div class="nav-tab" onclick="switchTab('flow')">Process Flow</div>
+  <div class="nav-tab" onclick="switchTab('wireframe')">Wireframe</div>
+  <div class="nav-tab" onclick="switchTab('sprint')">Sprint Board</div>
+  <div class="nav-tab" onclick="switchTab('rtm')">RTM</div>
+  <div class="nav-tab" onclick="switchTab('stakeholders')">Stakeholders</div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Artifacts</div>
+      <div class="sidebar-item active" onclick="switchTab('overview'); highlightSidebar(this)">
+        <div class="sidebar-icon si-blue">🏠</div> Overview
+      </div>
+      <div class="sidebar-item" onclick="switchTab('brd'); highlightSidebar(this)">
+        <div class="sidebar-icon si-blue">📄</div> BRD Summary
+      </div>
+      <div class="sidebar-item" onclick="switchTab('validation'); highlightSidebar(this)">
+        <div class="sidebar-icon si-teal">✓</div> FRD Summary
+      </div>
+      <div class="sidebar-item" onclick="switchTab('stories'); highlightSidebar(this)">
+        <div class="sidebar-icon si-purple">📝</div> User Stories
+      </div>
+      <div class="sidebar-item" onclick="switchTab('flow'); highlightSidebar(this)">
+        <div class="sidebar-icon si-teal">🔄</div> Process Flow
+      </div>
+      <div class="sidebar-item" onclick="switchTab('wireframe'); highlightSidebar(this)">
+        <div class="sidebar-icon si-amber">🖼️</div> Wireframe
+      </div>
+      <div class="sidebar-item" onclick="switchTab('sprint'); highlightSidebar(this)">
+        <div class="sidebar-icon si-teal">📋</div> Sprint Board
+      </div>
+      <div class="sidebar-item" onclick="switchTab('rtm'); highlightSidebar(this)">
+        <div class="sidebar-icon si-amber">🔗</div> RTM
+      </div>
+      <div class="sidebar-item" onclick="switchTab('stakeholders'); highlightSidebar(this)">
+        <div class="sidebar-icon si-purple">👥</div> Stakeholders
+      </div>
+    </div>
+    <div class="sidebar-section" style="border-top:1.5px solid var(--gray2); padding-top:16px;">
+      <div class="sidebar-label">Project Info</div>
+      <div style="font-size:12px; color:var(--text2); line-height:1.7;">
+        <div><b>Phase:</b> Requirements</div>
+        <div><b>Methodology:</b> Agile / Scrum</div>
+        <div><b>Sprints:</b> 3</div>
+        <div><b>Stories:</b> 15+</div>
+        <div><b>Status:</b> <span class="tag tag-teal">Completed</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- PAGE: OVERVIEW -->
+    <div class="page active" id="page-overview">
+      <div class="page-header">
+        <div class="page-title">Project Overview</div>
+        <div class="page-sub">E-Commerce Platform — Business Analysis Case Study</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">15+</div>
+          <div class="stat-label">User Stories</div>
+          <div class="stat-change up">↑ 3 sprints</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Modules</div>
+          <div class="stat-change" style="color:var(--gray3);">Analyzed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Stakeholders</div>
+          <div class="stat-change" style="color:var(--gray3);">Mapped</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Wireframes</div>
+          <div class="stat-change" style="color:var(--gray3);">Designed</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Business Problem Statement</div>
+        <p style="font-size:13.5px; color:var(--text2); line-height:1.7;">
+          The client (a mid-sized retail business) lacked a unified digital sales channel, causing loss of potential customers who preferred online shopping. The existing manual order process led to frequent errors, delayed fulfillment, and poor customer experience. The goal was to design and document requirements for a fully functional e-commerce platform covering product discovery, cart management, payment processing, and order tracking.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Scope & Modules Analyzed</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div style="background:var(--gray); border-radius:8px; padding:12px; font-size:12.5px; color:var(--text2);">
+            <div style="font-weight:600; color:var(--text); margin-bottom:4px;">🛍️ Product Catalogue</div>
+            Search, filter, categories, product detail
+          </div>
+          <div style="background:var(--gray); border-radius:8px; padding:12px; font-size:12.5px; color:var(--text2);">
+            <div style="font-weight:600; color:var(--text); margin-bottom:4px;">🛒 Cart Management</div>
+            Add/remove items, quantity update, subtotal
+          </div>
+          <div style="background:var(--gray); border-radius:8px; padding:12px; font-size:12.5px; color:var(--text2);">
+            <div style="font-weight:600; color:var(--text); margin-bottom:4px;">💳 Payment Gateway</div>
+            UPI, card, wallets, payment confirmation
+          </div>
+          <div style="background:var(--gray); border-radius:8px; padding:12px; font-size:12.5px; color:var(--text2);">
+            <div style="font-weight:600; color:var(--text); margin-bottom:4px;">📦 Order Management</div>
+            Order placed, tracking, cancellation, returns
+          </div>
+          <div style="background:var(--gray); border-radius:8px; padding:12px; font-size:12.5px; color:var(--text2);">
+            <div style="font-weight:600; color:var(--text); margin-bottom:4px;">👤 User Profile</div>
+            Registration, login, saved addresses, wishlist
+          </div>
+          <div style="background:var(--gray); border-radius:8px; padding:12px; font-size:12.5px; color:var(--text2);">
+            <div style="font-weight:600; color:var(--text); margin-bottom:4px;">⭐ Reviews & Ratings</div>
+            Product ratings, written reviews, moderation
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-amber"></span>BA Methodology Used</div>
+        <div style="display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px; color:var(--text2);">
+          <div><span style="font-weight:600; color:var(--text);">Elicitation:</span> Stakeholder interviews, surveys, competitor analysis</div>
+          <div><span style="font-weight:600; color:var(--text);">Documentation:</span> BRD, FRD, User Stories, RTM</div>
+          <div><span style="font-weight:600; color:var(--text);">Modelling:</span> Process flow diagrams, wireframes</div>
+          <div><span style="font-weight:600; color:var(--text);">Methodology:</span> Agile Scrum, 2-week sprints</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Project Progress</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text2); margin-bottom:4px;">
+              <span>Requirement Gathering</span><span style="color:var(--teal); font-weight:600;">100%</span>
+            </div>
+            <div class="progress-wrap"><div class="progress-fill" style="width:100%;background:var(--teal);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text2); margin-bottom:4px;">
+              <span>BRD & FRD Documentation</span><span style="color:var(--teal); font-weight:600;">100%</span>
+            </div>
+            <div class="progress-wrap"><div class="progress-fill" style="width:100%;background:var(--teal);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text2); margin-bottom:4px;">
+              <span>User Story Writing</span><span style="color:var(--teal); font-weight:600;">100%</span>
+            </div>
+            <div class="progress-wrap"><div class="progress-fill" style="width:100%;background:var(--teal);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text2); margin-bottom:4px;">
+              <span>Wireframing</span><span style="color:var(--teal); font-weight:600;">100%</span>
+            </div>
+            <div class="progress-wrap"><div class="progress-fill" style="width:100%;background:var(--teal);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text2); margin-bottom:4px;">
+              <span>Gap Analysis & RTM</span><span style="color:var(--teal); font-weight:600;">100%</span>
+            </div>
+            <div class="progress-wrap"><div class="progress-fill" style="width:100%;background:var(--teal);"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Outcome Metrics Referenced in Resume</div>
+        <div class="metric-strip">
+          <div class="metric-box">
+            <div class="metric-value">30%</div>
+            <div class="metric-label">Cart Abandonment Bottleneck</div>
+            <div style="font-size:12px; color:var(--text2); margin-top:8px; line-height:1.5;">Identified during As-Is checkout review; prioritized clearer cart, coupon, and payment steps.</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value">20%</div>
+            <div class="metric-label">Payment Inquiry Reduction</div>
+            <div style="font-size:12px; color:var(--text2); margin-top:8px; line-height:1.5;">Targeted through payment status messaging, retry handling, and email/SMS confirmation rules.</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">High Priority Traceability</div>
+            <div style="font-size:12px; color:var(--text2); margin-top:8px; line-height:1.5;">Must Have requirements mapped from business objective to user story and test case.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: BRD -->
+    <div class="page" id="page-brd">
+      <div class="page-header">
+        <div class="page-title">Business Requirements Document (BRD) Summary</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>1. Executive Summary</div>
+        <p style="font-size:13px; color:var(--text2); line-height:1.7;">
+          This BRD captures the business requirements for developing a scalable e-commerce platform for a retail organization. The platform must allow customers to browse products, manage their cart, make payments, and track orders. The development will follow Agile methodology across 3 sprints.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>2. Business Objectives</div>
+        <table>
+          <thead><tr><th>#</th><th>Objective</th><th>Success Metric</th><th>Priority</th></tr></thead>
+          <tbody>
+            <tr><td>BO-01</td><td>Enable online product discovery</td><td>100% product catalogue online</td><td><span class="tag tag-red">High</span></td></tr>
+            <tr><td>BO-02</td><td>Reduce order processing time</td><td>Orders processed in &lt;2 mins</td><td><span class="tag tag-red">High</span></td></tr>
+            <tr><td>BO-03</td><td>Support multiple payment modes</td><td>UPI, Cards, Wallets active</td><td><span class="tag tag-red">High</span></td></tr>
+            <tr><td>BO-04</td><td>Improve customer satisfaction</td><td>CSAT score &gt; 80%</td><td><span class="tag tag-amber">Medium</span></td></tr>
+            <tr><td>BO-05</td><td>Enable order tracking for customers</td><td>Real-time tracking on app</td><td><span class="tag tag-amber">Medium</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-amber"></span>3. Functional Requirements (Key)</div>
+        <table>
+          <thead><tr><th>Req ID</th><th>Requirement</th><th>Module</th><th>Priority</th></tr></thead>
+          <tbody>
+            <tr><td class="mono" style="font-family:monospace; font-size:12px;">FR-001</td><td>User shall be able to search products by name, category or brand</td><td>Catalogue</td><td><span class="tag tag-red">Must Have</span></td></tr>
+            <tr><td class="mono" style="font-family:monospace; font-size:12px;">FR-002</td><td>User shall be able to add/remove items from cart</td><td>Cart</td><td><span class="tag tag-red">Must Have</span></td></tr>
+            <tr><td class="mono" style="font-family:monospace; font-size:12px;">FR-003</td><td>System shall display real-time stock availability</td><td>Catalogue</td><td><span class="tag tag-red">Must Have</span></td></tr>
+            <tr><td class="mono" style="font-family:monospace; font-size:12px;">FR-004</td><td>User shall be able to apply discount coupons at checkout</td><td>Checkout</td><td><span class="tag tag-amber">Should Have</span></td></tr>
+            <tr><td class="mono" style="font-family:monospace; font-size:12px;">FR-005</td><td>System shall send email/SMS confirmation post-payment</td><td>Payment</td><td><span class="tag tag-red">Must Have</span></td></tr>
+            <tr><td class="mono" style="font-family:monospace; font-size:12px;">FR-006</td><td>User shall be able to track order in real time</td><td>Orders</td><td><span class="tag tag-amber">Should Have</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>4. Non-Functional Requirements</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12.5px;">
+          <div style="background:var(--gray); border-radius:8px; padding:12px;">
+            <div style="font-weight:600; color:var(--text); margin-bottom:3px;">Performance</div>
+            <div style="color:var(--text2);">Page load time &lt; 3 seconds on 4G network</div>
+          </div>
+          <div style="background:var(--gray); border-radius:8px; padding:12px;">
+            <div style="font-weight:600; color:var(--text); margin-bottom:3px;">Scalability</div>
+            <div style="color:var(--text2);">System shall support 10,000 concurrent users</div>
+          </div>
+          <div style="background:var(--gray); border-radius:8px; padding:12px;">
+            <div style="font-weight:600; color:var(--text); margin-bottom:3px;">Security</div>
+            <div style="color:var(--text2);">PCI-DSS compliance for payment data handling</div>
+          </div>
+          <div style="background:var(--gray); border-radius:8px; padding:12px;">
+            <div style="font-weight:600; color:var(--text); margin-bottom:3px;">Availability</div>
+            <div style="color:var(--text2);">99.9% uptime SLA, downtime &lt; 8 hours/year</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: VALIDATION -->
+    <div class="page" id="page-validation">
+      <div class="page-header">
+        <div class="page-title">Functional Requirement Document (FRD) Summary</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-amber"></span>FRD Detail — Cart & Payment Modules</div>
+        <div class="frd-grid">
+          <div class="frd-box"><b>FRD-CART-01 Cart Persistence:</b> Logged-in users retain cart items across sessions; guest users retain cart in browser session until checkout or timeout.</div>
+          <div class="frd-box"><b>FRD-CART-02 Quantity Rules:</b> Quantity can be increased or decreased from cart; system validates stock before checkout and recalculates subtotal instantly.</div>
+          <div class="frd-box"><b>FRD-CART-03 Coupon Handling:</b> Coupon validation checks expiry, minimum cart value, eligible category, and one-coupon-per-order rule.</div>
+          <div class="frd-box"><b>FRD-CART-04 Abandonment UX:</b> Cart page shows delivery estimate, transparent charges, saved items, and clear checkout CTA to reduce drop-off.</div>
+          <div class="frd-box"><b>FRD-PAY-01 Payment Modes:</b> Checkout supports UPI, debit/credit card, and wallet in Phase 1; net banking is logged as a future backlog item.</div>
+          <div class="frd-box"><b>FRD-PAY-02 Payment Security:</b> Card data is handled by payment gateway tokenization; platform does not store sensitive card data and follows PCI-DSS expectations.</div>
+          <div class="frd-box"><b>FRD-PAY-03 Failure Handling:</b> Failed or timed-out payment redirects to retry page with order summary retained; no duplicate order is created.</div>
+          <div class="frd-box"><b>FRD-PAY-04 Confirmation:</b> Successful payment displays confirmation within 5 seconds and triggers email/SMS within 1 minute.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Use Case — Checkout Payment</div>
+        <table>
+          <tbody>
+            <tr><td style="font-weight:600;">Primary Actor</td><td>Customer</td></tr>
+            <tr><td style="font-weight:600;">Precondition</td><td>Customer has at least one item in cart and a valid delivery address selected.</td></tr>
+            <tr><td style="font-weight:600;">Main Flow</td><td>Review cart → Select address → Apply coupon → Choose payment mode → Complete gateway payment → Receive confirmation.</td></tr>
+            <tr><td style="font-weight:600;">Alternate Flow</td><td>Payment fails or times out → User returns to retry page → Cart and order summary remain available → User retries or cancels.</td></tr>
+            <tr><td style="font-weight:600;">Postcondition</td><td>Order is created only after payment success; confirmation is sent through email/SMS and order tracking is enabled.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGE: USER STORIES -->
+    <div class="page" id="page-stories">
+      <div class="page-header">
+        <div class="page-title">User Stories</div>
+        <div class="page-sub">Agile format — As a [role] I want [goal] so that [benefit] · With Acceptance Criteria</div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-001 · Sprint 1</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>search for products by name or category</b> so that I can <b>quickly find what I am looking for without browsing the entire catalogue</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Search bar is visible on every page of the platform</li>
+          <li>Results appear within 2 seconds of entering a keyword</li>
+          <li>User can filter results by category, price range, and rating</li>
+          <li>System shows "No results found" with suggestions if nothing matches</li>
+        </ul>
+        <div class="us-footer">
+          <span class="tag tag-blue">Catalogue</span>
+          <span class="tag tag-red">Must Have</span>
+          <span class="tag tag-gray">5 Points</span>
+        </div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-002 · Sprint 1</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>add products to my cart and update quantities</b> so that I can <b>manage my purchase list before completing the order</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Cart icon on the header shows real-time item count</li>
+          <li>User can increment/decrement quantity directly in the cart</li>
+          <li>Removing an item prompts a confirmation before deletion</li>
+          <li>Cart persists across sessions for logged-in users</li>
+        </ul>
+        <div class="us-footer">
+          <span class="tag tag-blue">Cart</span>
+          <span class="tag tag-red">Must Have</span>
+          <span class="tag tag-gray">3 Points</span>
+        </div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-003 · Sprint 1</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>create an account and log in securely</b> so that I can <b>access my saved addresses, order history, and wishlist</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Registration requires email, phone number, and password</li>
+          <li>OTP verification is mandatory for new registrations</li>
+          <li>Password must be minimum 8 characters with one special character</li>
+          <li>System locks account after 5 consecutive failed login attempts</li>
+        </ul>
+        <div class="us-footer">
+          <span class="tag tag-purple">User Auth</span>
+          <span class="tag tag-red">Must Have</span>
+          <span class="tag tag-gray">8 Points</span>
+        </div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-004 · Sprint 2</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>complete payment using UPI, card, or wallet</b> so that I can <b>pay using my preferred method without leaving the platform</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Checkout page shows available payment options (UPI, debit/credit card, wallet)</li>
+          <li>Payment confirmation is displayed within 5 seconds of transaction</li>
+          <li>System sends order confirmation email and SMS within 1 minute</li>
+          <li>Failed payment redirects to retry page, not homepage</li>
+        </ul>
+        <div class="us-footer">
+          <span class="tag tag-amber">Payment</span>
+          <span class="tag tag-red">Must Have</span>
+          <span class="tag tag-gray">13 Points</span>
+        </div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-005 · Sprint 2</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>track my order in real time</b> so that I can <b>know the exact status and estimated delivery time</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Order status screen shows: Placed, Packed, Shipped, Out for Delivery, Delivered</li>
+          <li>Each status change triggers a push notification and email</li>
+          <li>Estimated delivery date is shown on the order detail page</li>
+          <li>User can raise a delivery issue from the tracking page</li>
+        </ul>
+        <div class="us-footer">
+          <span class="tag tag-teal">Orders</span>
+          <span class="tag tag-amber">Should Have</span>
+          <span class="tag tag-gray">8 Points</span>
+        </div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-006 · Sprint 3</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>write a product review and rating after delivery</b> so that I can <b>share my experience and help other buyers make informed decisions</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Review option appears only after order status is "Delivered"</li>
+          <li>Rating is out of 5 stars; written review is optional (max 500 chars)</li>
+          <li>Reviews are visible on product page within 24 hours of submission</li>
+          <li>User can edit/delete their review within 7 days of posting</li>
+        </ul>
+        <div class="us-footer">
+          <span class="tag tag-purple">Reviews</span>
+          <span class="tag tag-gray">Could Have</span>
+          <span class="tag tag-gray">5 Points</span>
+        </div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-007 · Sprint 3</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>save products to a wishlist</b> so that I can <b>return to items I am interested in later</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Wishlist icon is visible on product listing and product detail pages</li>
+          <li>User must be logged in to save wishlist items</li>
+          <li>Wishlist items remain available across devices</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-purple">Wishlist</span><span class="tag tag-gray">Could Have</span><span class="tag tag-gray">3 Points</span></div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-008 · Sprint 3</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>compare selected products</b> so that I can <b>make a faster purchase decision</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>User can select up to 4 products from the same category for comparison</li>
+          <li>Comparison screen shows price, rating, stock, and key specifications</li>
+          <li>User can remove an item from comparison without losing other selections</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-blue">Catalogue</span><span class="tag tag-gray">Could Have</span><span class="tag tag-gray">5 Points</span></div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-009 · Sprint 3</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>view recently viewed products</b> so that I can <b>quickly revisit products I considered earlier</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Recently viewed section displays the last 10 viewed products</li>
+          <li>User can clear recently viewed history</li>
+          <li>Products that are no longer available are marked as out of stock</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-gray">Enhancement</span><span class="tag tag-gray">Could Have</span><span class="tag tag-gray">2 Points</span></div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-010 · Sprint 2</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>apply a discount coupon at checkout</b> so that I can <b>receive eligible offers before payment</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>System validates coupon code, expiry date, minimum cart value, and category eligibility</li>
+          <li>Only one coupon can be applied per order</li>
+          <li>Invalid coupons show a clear reason without clearing cart details</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-amber">Checkout</span><span class="tag tag-amber">Should Have</span><span class="tag tag-gray">3 Points</span></div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-011 · Sprint 1</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>see real-time stock availability</b> so that I can <b>avoid ordering unavailable products</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Product listing and detail pages show In Stock, Low Stock, or Out of Stock</li>
+          <li>Add to Cart button is disabled for out-of-stock products</li>
+          <li>Stock status updates before checkout confirmation</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-teal">Catalogue</span><span class="tag tag-red">Must Have</span><span class="tag tag-gray">2 Points</span></div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-012 · Sprint 2</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>save multiple delivery addresses</b> so that I can <b>choose the correct address during checkout</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>User can add, edit, delete, and mark one default address</li>
+          <li>Address requires name, phone, pincode, city, state, and full address</li>
+          <li>Checkout preselects the default address for logged-in users</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-purple">User Profile</span><span class="tag tag-amber">Should Have</span><span class="tag tag-gray">5 Points</span></div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-013 · Sprint 2</div>
+        <div class="us-story">As a <b>customer</b>, I want to <b>receive order confirmation by email and SMS</b> so that I can <b>trust that my payment and order were successful</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Confirmation is sent within 1 minute of successful payment</li>
+          <li>Message includes order ID, amount paid, delivery address, and estimated delivery date</li>
+          <li>If notification fails, order status still remains visible in My Orders</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-blue">Notification</span><span class="tag tag-red">Must Have</span><span class="tag tag-gray">3 Points</span></div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-014 · Sprint 3</div>
+        <div class="us-story">As a <b>customer support agent</b>, I want to <b>view order status and payment status</b> so that I can <b>resolve customer queries faster</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Agent can search order by order ID, customer phone, or email</li>
+          <li>System shows payment status, shipment status, and latest customer notification</li>
+          <li>Agent view does not expose sensitive card or payment instrument data</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-teal">Support</span><span class="tag tag-amber">Should Have</span><span class="tag tag-gray">5 Points</span></div>
+      </div>
+
+      <div class="us-card">
+        <div class="us-id">US-015 · Sprint 3</div>
+        <div class="us-story">As a <b>business owner</b>, I want to <b>view basic sales and cart abandonment metrics</b> so that I can <b>track whether the platform is improving online conversion</b>.</div>
+        <div class="us-ac-title">Acceptance Criteria</div>
+        <ul class="us-ac-list">
+          <li>Dashboard shows total orders, payment success rate, and cart abandonment rate</li>
+          <li>Metrics can be filtered by date range and product category</li>
+          <li>Export to Excel is available for weekly stakeholder reporting</li>
+        </ul>
+        <div class="us-footer"><span class="tag tag-purple">Analytics</span><span class="tag tag-gray">Could Have</span><span class="tag tag-gray">8 Points</span></div>
+      </div>
+    </div>
+
+    <!-- PAGE: FLOW -->
+    <div class="page" id="page-flow">
+      <div class="page-header">
+        <div class="page-title">Order Lifecycle – Process Flow Diagram</div>
+        <div class="page-sub">As-Is mapped and To-Be designed using Draw.io methodology</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Order Lifecycle Flow (Customer → Delivery)</div>
+        <div class="flow-wrap">
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <!-- Row 1 -->
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              <div class="flow-step"><div class="flow-box" style="background:#e8f1fb; color:#1a5aad;">🔍 Browse Products</div><div class="flow-label">Catalogue</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><div class="flow-box" style="background:#f0eafa; color:#6c3ec0;">🛒 Add to Cart</div><div class="flow-label">Cart Module</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><div class="flow-box" style="background:#fef4e0; color:#c4780a;">🏠 Enter Address</div><div class="flow-label">Checkout</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><div class="flow-box" style="background:#fef4e0; color:#c4780a;">🏷️ Apply Coupon</div><div class="flow-label">Optional</div></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-step"><div class="flow-box amber" style="background:#e4f5f1; color:#0d9476;">💳 Select Payment</div><div class="flow-label">Payment</div></div>
+            </div>
+            <!-- Decision -->
+            <div style="display:flex; align-items:center; gap:6px; margin-left:20px;">
+              <div class="flow-arrow" style="transform:rotate(90deg)">→</div>
+              <div style="font-size:11px; color:var(--gray3);">Payment Initiated</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              <div class="flow-step"><div style="background:#f0eafa; border:1.5px solid #c9b4f0; border-radius:8px; padding:12px 16px; min-width:100px; font-size:12px; font-weight:500; color:#6c3ec0;">⚡ Payment Gateway</div><div class="flow-label">3rd Party</div></div>
+              <div class="flow-arrow">→</div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <div class="flow-box green">✅ Success</div>
+                  <div class="flow-arrow">→</div>
+                  <div class="flow-box green">📦 Order Placed</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <div class="flow-box" style="background:#fdf0ee; color:#c0392b; border-color:#f0b8b0;">❌ Failed</div>
+                  <div class="flow-arrow">→</div>
+                  <div class="flow-box" style="background:#fdf0ee; color:#c0392b; border-color:#f0b8b0;">🔄 Retry / Cancel</div>
+                </div>
+              </div>
+            </div>
+            <!-- Row 3: Order flow -->
+            <div style="margin-top:8px;">
+              <div style="font-size:11px; font-weight:600; color:var(--gray3); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">Order Fulfillment Flow</div>
+              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <div class="flow-box green">📋 Order Placed</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box green">📦 Warehouse Packed</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box green">🚚 Shipped</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box green">🏍️ Out for Delivery</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box green">✅ Delivered</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Gap Analysis — As-Is vs To-Be</div>
+        <table>
+          <thead><tr><th>Process Area</th><th>As-Is (Current)</th><th>To-Be (Proposed)</th><th>Gap</th></tr></thead>
+          <tbody>
+            <tr><td>Order Placement</td><td>Manual phone/WhatsApp orders</td><td>Self-service online ordering</td><td><span class="tag tag-red">Critical</span></td></tr>
+            <tr><td>Payment</td><td>Cash on delivery only</td><td>Multi-mode digital payment</td><td><span class="tag tag-red">Critical</span></td></tr>
+            <tr><td>Order Tracking</td><td>Customer calls support</td><td>Real-time app-based tracking</td><td><span class="tag tag-amber">High</span></td></tr>
+            <tr><td>Inventory Updates</td><td>Manual Excel update daily</td><td>Real-time stock sync</td><td><span class="tag tag-amber">High</span></td></tr>
+            <tr><td>Customer Feedback</td><td>No formal feedback channel</td><td>In-app reviews and ratings</td><td><span class="tag tag-teal">Medium</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGE: WIREFRAME -->
+    <div class="page" id="page-wireframe">
+      <div class="page-header">
+        <div class="page-title">Low-Fidelity Wireframe — Product Listing Page</div>
+        <div class="page-sub">Designed to show layout structure and information hierarchy. Created using Figma/Balsamiq methodology.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-amber"></span>Screen: Product Listing Page</div>
+        <div class="wireframe">
+          <div class="wf-bar">
+            <div style="font-size:13px; font-weight:700; letter-spacing:0.5px;">ShopEasy</div>
+            <input class="wf-search" placeholder="🔍  Search products, brands...">
+            <div style="display:flex; gap:14px; font-size:12px;">
+              <span>👤 Account</span>
+              <span>❤️ Wishlist</span>
+              <span>🛒 Cart (3)</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:14px;">
+            <div style="width:140px; flex-shrink:0;">
+              <div style="font-size:11px; font-weight:700; color:var(--text); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;">Filters</div>
+              <div style="font-size:11px; color:var(--text2); display:flex; flex-direction:column; gap:6px;">
+                <div style="font-weight:600; color:var(--text); margin-top:6px;">Category</div>
+                <label style="display:flex; gap:6px; align-items:center; cursor:pointer;"><input type="checkbox" checked> Electronics</label>
+                <label style="display:flex; gap:6px; align-items:center; cursor:pointer;"><input type="checkbox"> Fashion</label>
+                <label style="display:flex; gap:6px; align-items:center; cursor:pointer;"><input type="checkbox"> Home & Kitchen</label>
+                <label style="display:flex; gap:6px; align-items:center; cursor:pointer;"><input type="checkbox"> Sports</label>
+                <div style="font-weight:600; color:var(--text); margin-top:10px;">Price Range</div>
+                <input type="range" min="0" max="100000" value="50000" style="width:100%;">
+                <div>₹0 – ₹50,000</div>
+                <div style="font-weight:600; color:var(--text); margin-top:10px;">Rating</div>
+                <label><input type="checkbox"> ⭐⭐⭐⭐ & above</label>
+                <label><input type="checkbox"> ⭐⭐⭐ & above</label>
+              </div>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <div style="font-size:12px; color:var(--text2);">Showing <b>48</b> results for "Electronics"</div>
+                <select style="font-size:11px; padding:5px 10px; border:1px solid var(--gray2); border-radius:5px; font-family:inherit;">
+                  <option>Sort: Relevance</option>
+                  <option>Price: Low to High</option>
+                  <option>Price: High to Low</option>
+                  <option>Avg. Rating</option>
+                </select>
+              </div>
+              <div class="wf-product-grid">
+                <div class="wf-product">
+                  <div class="wf-product-img">📱</div>
+                  <div class="wf-product-info">
+                    <div class="wf-product-name">Smartphone Pro X</div>
+                    <div style="font-size:10px; color:orange; margin-bottom:4px;">⭐⭐⭐⭐ (1.2k)</div>
+                    <div class="wf-product-price">₹18,999</div>
+                    <button class="wf-btn">Add to Cart</button>
+                  </div>
+                </div>
+                <div class="wf-product">
+                  <div class="wf-product-img">💻</div>
+                  <div class="wf-product-info">
+                    <div class="wf-product-name">Laptop 15" HD</div>
+                    <div style="font-size:10px; color:orange; margin-bottom:4px;">⭐⭐⭐⭐⭐ (843)</div>
+                    <div class="wf-product-price">₹42,499</div>
+                    <button class="wf-btn">Add to Cart</button>
+                  </div>
+                </div>
+                <div class="wf-product">
+                  <div class="wf-product-img">🎧</div>
+                  <div class="wf-product-info">
+                    <div class="wf-product-name">Wireless Headphones</div>
+                    <div style="font-size:10px; color:orange; margin-bottom:4px;">⭐⭐⭐⭐ (2.1k)</div>
+                    <div class="wf-product-price">₹2,999</div>
+                    <button class="wf-btn">Add to Cart</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:12px; color:var(--gray3); margin-top:10px; padding: 10px 0 0; border-top:1px solid var(--gray2);">
+          <b>Wireframe Notes:</b> Left panel = Filters (category, price, rating) · Right = Product grid (3 cols) · Header shows search, cart count, account. Annotated for dev handoff.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Screen: Homepage</div>
+        <div class="wireframe">
+          <div class="wf-bar">
+            <div style="font-size:13px; font-weight:700; letter-spacing:0.5px;">ShopEasy</div>
+            <input class="wf-search" placeholder="Search products, brands...">
+            <div style="display:flex; gap:14px; font-size:12px;"><span>Account</span><span>Wishlist</span><span>Cart (3)</span></div>
+          </div>
+          <div class="wf-hero">
+            <div style="font-size:18px; font-weight:700; color:var(--navy); margin-bottom:8px;">Discover electronics, fashion, and daily essentials</div>
+            <div class="wf-line" style="width:70%;"></div>
+            <div class="wf-line" style="width:45%;"></div>
+            <button class="wf-btn" style="width:130px; margin-top:8px;">Shop Now</button>
+          </div>
+          <div class="wf-screen-title">Featured Categories <span class="wf-screen-note">homepage discovery</span></div>
+          <div class="wf-tile-grid">
+            <div class="wf-tile"><div class="wf-line dark" style="width:36px;"></div><div style="font-size:11px;font-weight:600;">Electronics</div><div class="wf-line" style="margin-top:8px;"></div></div>
+            <div class="wf-tile"><div class="wf-line dark" style="width:36px;"></div><div style="font-size:11px;font-weight:600;">Fashion</div><div class="wf-line" style="margin-top:8px;"></div></div>
+            <div class="wf-tile"><div class="wf-line dark" style="width:36px;"></div><div style="font-size:11px;font-weight:600;">Home</div><div class="wf-line" style="margin-top:8px;"></div></div>
+            <div class="wf-tile"><div class="wf-line dark" style="width:36px;"></div><div style="font-size:11px;font-weight:600;">Sports</div><div class="wf-line" style="margin-top:8px;"></div></div>
+          </div>
+          <div class="wf-screen-title">Deals & Recommended Products</div>
+          <div class="wf-product-grid">
+            <div class="wf-product"><div class="wf-product-img">Phone</div><div class="wf-product-info"><div class="wf-product-name">Smartphone Deals</div><div class="wf-product-price">From Rs. 9,999</div><button class="wf-btn">View</button></div></div>
+            <div class="wf-product"><div class="wf-product-img">Laptop</div><div class="wf-product-info"><div class="wf-product-name">Laptop Offers</div><div class="wf-product-price">From Rs. 34,999</div><button class="wf-btn">View</button></div></div>
+            <div class="wf-product"><div class="wf-product-img">Audio</div><div class="wf-product-info"><div class="wf-product-name">Audio Picks</div><div class="wf-product-price">From Rs. 1,499</div><button class="wf-btn">View</button></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Screen: Product Detail Page</div>
+        <div class="wireframe">
+          <div class="wf-bar">
+            <div style="font-size:13px; font-weight:700;">ShopEasy</div>
+            <input class="wf-search" placeholder="Search products, brands...">
+            <div style="display:flex; gap:14px; font-size:12px;"><span>Account</span><span>Wishlist</span><span>Cart (3)</span></div>
+          </div>
+          <div class="wf-row">
+            <div style="width:42%;">
+              <div class="wf-detail-img">Product Image Gallery</div>
+              <div style="display:flex; gap:8px; margin-top:10px;">
+                <div class="wf-panel" style="height:48px; flex:1;"></div><div class="wf-panel" style="height:48px; flex:1;"></div><div class="wf-panel" style="height:48px; flex:1;"></div>
+              </div>
+            </div>
+            <div class="wf-col">
+              <div style="font-size:16px; font-weight:700; color:var(--text); margin-bottom:6px;">Smartphone Pro X</div>
+              <div style="font-size:11px; color:orange; margin-bottom:10px;">Rating: 4 stars (1.2k reviews)</div>
+              <div style="font-size:20px; font-weight:700; color:var(--blue); margin-bottom:10px;">Rs. 18,999</div>
+              <div class="wf-panel" style="margin-bottom:10px;">
+                <div style="font-size:11px; font-weight:700; margin-bottom:6px;">Key Specifications</div>
+                <div class="wf-line"></div><div class="wf-line" style="width:85%;"></div><div class="wf-line" style="width:70%;"></div>
+              </div>
+              <div style="display:flex; gap:10px; margin-bottom:12px;"><button class="wf-btn">Add to Cart</button><button class="wf-btn" style="background:var(--amber);">Buy Now</button></div>
+              <div class="wf-panel"><div style="font-size:11px; font-weight:700; margin-bottom:6px;">Delivery & Return</div><div class="wf-line"></div><div class="wf-line" style="width:75%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Screen: Cart Page</div>
+        <div class="wireframe">
+          <div class="wf-bar">
+            <div style="font-size:13px; font-weight:700;">ShopEasy</div>
+            <input class="wf-search" placeholder="Search products, brands...">
+            <div style="display:flex; gap:14px; font-size:12px;"><span>Account</span><span>Wishlist</span><span>Cart (3)</span></div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-col">
+              <div style="font-size:14px; font-weight:700; margin-bottom:12px;">Shopping Cart (3 items)</div>
+              <div class="wf-panel" style="margin-bottom:10px; display:flex; gap:12px; align-items:center;">
+                <div class="wf-product-img" style="width:70px; height:58px; flex-shrink:0;">Phone</div>
+                <div style="flex:1;"><div class="wf-product-name">Smartphone Pro X</div><div class="wf-product-price">Rs. 18,999</div></div>
+                <div class="wf-qty">- 1 +</div>
+                <button class="wf-btn" style="width:70px; background:var(--red);">Remove</button>
+              </div>
+              <div class="wf-panel" style="margin-bottom:10px; display:flex; gap:12px; align-items:center;">
+                <div class="wf-product-img" style="width:70px; height:58px; flex-shrink:0;">Audio</div>
+                <div style="flex:1;"><div class="wf-product-name">Wireless Headphones</div><div class="wf-product-price">Rs. 2,999</div></div>
+                <div class="wf-qty">- 2 +</div>
+                <button class="wf-btn" style="width:70px; background:var(--red);">Remove</button>
+              </div>
+            </div>
+            <div style="width:230px;">
+              <div class="wf-panel">
+                <div style="font-size:13px; font-weight:700; margin-bottom:10px;">Order Summary</div>
+                <div class="wf-line"></div><div class="wf-line"></div><div class="wf-line" style="width:70%;"></div>
+                <div style="border-top:1px solid var(--gray2); margin:12px 0; padding-top:10px; display:flex; justify-content:space-between; font-size:13px; font-weight:700;"><span>Total</span><span>Rs. 24,997</span></div>
+                <button class="wf-btn">Proceed to Checkout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-amber"></span>Screen: Checkout Page</div>
+        <div class="wireframe">
+          <div class="wf-bar">
+            <div style="font-size:13px; font-weight:700;">ShopEasy</div>
+            <input class="wf-search" placeholder="Search products, brands...">
+            <div style="display:flex; gap:14px; font-size:12px;"><span>Account</span><span>Cart (3)</span></div>
+          </div>
+          <div class="wf-stepper">
+            <div class="wf-step active">1. Address</div>
+            <div class="wf-step active">2. Review</div>
+            <div class="wf-step active">3. Payment</div>
+            <div class="wf-step">4. Confirmation</div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-col">
+              <div class="wf-panel" style="margin-bottom:12px;"><div style="font-size:12px; font-weight:700; margin-bottom:8px;">Delivery Address</div><div class="wf-line"></div><div class="wf-line" style="width:75%;"></div><button class="wf-btn" style="width:120px; margin-top:6px;">Change</button></div>
+              <div class="wf-panel" style="margin-bottom:12px;"><div style="font-size:12px; font-weight:700; margin-bottom:8px;">Apply Coupon</div><div style="display:flex; gap:8px;"><input style="flex:1; border:1px solid var(--gray2); border-radius:5px; padding:6px; font-family:inherit;" placeholder="Enter coupon code"><button class="wf-btn" style="width:80px;">Apply</button></div></div>
+              <div class="wf-panel"><div style="font-size:12px; font-weight:700; margin-bottom:8px;">Payment Method</div><label style="display:block; font-size:12px; margin-bottom:7px;"><input type="radio" checked> UPI</label><label style="display:block; font-size:12px; margin-bottom:7px;"><input type="radio"> Debit/Credit Card</label><label style="display:block; font-size:12px;"><input type="radio"> Wallet</label></div>
+            </div>
+            <div style="width:230px;">
+              <div class="wf-panel">
+                <div style="font-size:13px; font-weight:700; margin-bottom:10px;">Payment Summary</div>
+                <div class="wf-line"></div><div class="wf-line"></div><div class="wf-line" style="width:80%;"></div>
+                <div style="border-top:1px solid var(--gray2); margin:12px 0; padding-top:10px; display:flex; justify-content:space-between; font-size:13px; font-weight:700;"><span>Payable</span><span>Rs. 24,997</span></div>
+                <button class="wf-btn">Pay Securely</button>
+                <div style="font-size:10px; color:var(--gray3); margin-top:8px; line-height:1.4;">Payment failure keeps order summary available for retry.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: SPRINT -->
+    <div class="page" id="page-sprint">
+      <div class="page-header">
+        <div class="page-title">Sprint Board — Sprint 2</div>
+        <div class="page-sub">Mock Jira Board · 2-week sprint · Team: 1 BA, 2 Devs, 1 QA</div>
+      </div>
+      <div class="card" style="padding:16px;">
+        <div class="sprint-board">
+          <div class="sprint-col">
+            <div class="sprint-col-title">Backlog <span class="sprint-count">4</span></div>
+            <div class="sprint-card">
+              <div class="sprint-card-id">US-007</div>
+              <div class="sprint-card-title">Add wishlist functionality</div>
+              <div class="sprint-card-footer"><span class="tag tag-purple" style="font-size:10px;">Feature</span><span class="story-points">3</span></div>
+            </div>
+            <div class="sprint-card">
+              <div class="sprint-card-id">US-008</div>
+              <div class="sprint-card-title">Product comparison screen</div>
+              <div class="sprint-card-footer"><span class="tag tag-blue" style="font-size:10px;">Feature</span><span class="story-points">5</span></div>
+            </div>
+            <div class="sprint-card">
+              <div class="sprint-card-id">US-009</div>
+              <div class="sprint-card-title">Recently viewed products</div>
+              <div class="sprint-card-footer"><span class="tag tag-gray" style="font-size:10px;">Enhancement</span><span class="story-points">2</span></div>
+            </div>
+            <div class="sprint-card">
+              <div class="sprint-card-id">BUG-04</div>
+              <div class="sprint-card-title">Cart qty not saving on logout</div>
+              <div class="sprint-card-footer"><span class="tag tag-red" style="font-size:10px;">Bug</span><span class="story-points">2</span></div>
+            </div>
+          </div>
+          <div class="sprint-col">
+            <div class="sprint-col-title">In Progress <span class="sprint-count">3</span></div>
+            <div class="sprint-card" style="border-left:3px solid var(--blue);">
+              <div class="sprint-card-id">US-004</div>
+              <div class="sprint-card-title">Payment gateway integration</div>
+              <div class="sprint-card-footer"><span class="tag tag-amber" style="font-size:10px;">Payment</span><span class="story-points">13</span></div>
+            </div>
+            <div class="sprint-card" style="border-left:3px solid var(--blue);">
+              <div class="sprint-card-id">US-005</div>
+              <div class="sprint-card-title">Real-time order tracking</div>
+              <div class="sprint-card-footer"><span class="tag tag-teal" style="font-size:10px;">Orders</span><span class="story-points">8</span></div>
+            </div>
+            <div class="sprint-card" style="border-left:3px solid var(--blue);">
+              <div class="sprint-card-id">FR-005</div>
+              <div class="sprint-card-title">Email/SMS confirmation</div>
+              <div class="sprint-card-footer"><span class="tag tag-blue" style="font-size:10px;">Notification</span><span class="story-points">3</span></div>
+            </div>
+          </div>
+          <div class="sprint-col">
+            <div class="sprint-col-title">In Review <span class="sprint-count">2</span></div>
+            <div class="sprint-card" style="border-left:3px solid var(--amber);">
+              <div class="sprint-card-id">US-002</div>
+              <div class="sprint-card-title">Cart add/remove with persistence</div>
+              <div class="sprint-card-footer"><span class="tag tag-blue" style="font-size:10px;">Cart</span><span class="story-points">3</span></div>
+            </div>
+            <div class="sprint-card" style="border-left:3px solid var(--amber);">
+              <div class="sprint-card-id">US-003</div>
+              <div class="sprint-card-title">User registration & OTP login</div>
+              <div class="sprint-card-footer"><span class="tag tag-purple" style="font-size:10px;">Auth</span><span class="story-points">8</span></div>
+            </div>
+          </div>
+          <div class="sprint-col">
+            <div class="sprint-col-title">Done <span class="sprint-count">3</span></div>
+            <div class="sprint-card" style="border-left:3px solid var(--teal); opacity:0.8;">
+              <div class="sprint-card-id">US-001</div>
+              <div class="sprint-card-title">Product search with filters</div>
+              <div class="sprint-card-footer"><span class="tag tag-teal" style="font-size:10px;">Catalogue</span><span class="story-points">5</span></div>
+            </div>
+            <div class="sprint-card" style="border-left:3px solid var(--teal); opacity:0.8;">
+              <div class="sprint-card-id">FR-001</div>
+              <div class="sprint-card-title">Product listing page</div>
+              <div class="sprint-card-footer"><span class="tag tag-teal" style="font-size:10px;">Catalogue</span><span class="story-points">3</span></div>
+            </div>
+            <div class="sprint-card" style="border-left:3px solid var(--teal); opacity:0.8;">
+              <div class="sprint-card-id">FR-003</div>
+              <div class="sprint-card-title">Real-time stock display</div>
+              <div class="sprint-card-footer"><span class="tag tag-teal" style="font-size:10px;">Catalogue</span><span class="story-points">2</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--gray2); display:flex; gap:20px; font-size:12px; color:var(--text2);">
+          <span><b>Sprint Velocity:</b> 38 story points</span>
+          <span><b>Sprint Goal:</b> Complete payment, auth & order tracking</span>
+          <span style="color:var(--teal); font-weight:600;">On Track ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: RTM -->
+    <div class="page" id="page-rtm">
+      <div class="page-header">
+        <div class="page-title">Requirements Traceability Matrix (RTM)</div>
+        <div class="page-sub">Maps business objectives → functional requirements → user stories → test cases</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-amber"></span>RTM — Core Requirements</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Req ID</th>
+              <th>Business Objective</th>
+              <th>Requirement</th>
+              <th>User Story</th>
+              <th>Test Case</th>
+              <th>Priority</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="rtm-row-high">
+              <td style="font-family:monospace; font-size:11px;">FR-001</td>
+              <td>Enable online product discovery</td>
+              <td>Product search by name/category</td>
+              <td style="font-family:monospace; font-size:11px;">US-001</td>
+              <td style="font-family:monospace; font-size:11px;">TC-001</td>
+              <td><span class="tag tag-red">High</span></td>
+              <td><span class="tag tag-teal">Done</span></td>
+            </tr>
+            <tr class="rtm-row-high">
+              <td style="font-family:monospace; font-size:11px;">FR-002</td>
+              <td>Reduce order processing time</td>
+              <td>Add/remove items from cart</td>
+              <td style="font-family:monospace; font-size:11px;">US-002</td>
+              <td style="font-family:monospace; font-size:11px;">TC-002</td>
+              <td><span class="tag tag-red">High</span></td>
+              <td><span class="tag tag-amber">In Review</span></td>
+            </tr>
+            <tr class="rtm-row-high">
+              <td style="font-family:monospace; font-size:11px;">FR-003</td>
+              <td>Enable online product discovery</td>
+              <td>Real-time stock availability</td>
+              <td style="font-family:monospace; font-size:11px;">US-001</td>
+              <td style="font-family:monospace; font-size:11px;">TC-003</td>
+              <td><span class="tag tag-red">High</span></td>
+              <td><span class="tag tag-teal">Done</span></td>
+            </tr>
+            <tr class="rtm-row-high">
+              <td style="font-family:monospace; font-size:11px;">FR-004</td>
+              <td>Support multiple payment modes</td>
+              <td>Multi-mode payment gateway</td>
+              <td style="font-family:monospace; font-size:11px;">US-004</td>
+              <td style="font-family:monospace; font-size:11px;">TC-004</td>
+              <td><span class="tag tag-red">High</span></td>
+              <td><span class="tag tag-blue">In Progress</span></td>
+            </tr>
+            <tr class="rtm-row-med">
+              <td style="font-family:monospace; font-size:11px;">FR-005</td>
+              <td>Improve customer satisfaction</td>
+              <td>Email/SMS order confirmation</td>
+              <td style="font-family:monospace; font-size:11px;">US-004</td>
+              <td style="font-family:monospace; font-size:11px;">TC-005</td>
+              <td><span class="tag tag-amber">Medium</span></td>
+              <td><span class="tag tag-blue">In Progress</span></td>
+            </tr>
+            <tr class="rtm-row-med">
+              <td style="font-family:monospace; font-size:11px;">FR-006</td>
+              <td>Enable order tracking</td>
+              <td>Real-time order status tracking</td>
+              <td style="font-family:monospace; font-size:11px;">US-005</td>
+              <td style="font-family:monospace; font-size:11px;">TC-006</td>
+              <td><span class="tag tag-amber">Medium</span></td>
+              <td><span class="tag tag-blue">In Progress</span></td>
+            </tr>
+            <tr class="rtm-row-low">
+              <td style="font-family:monospace; font-size:11px;">FR-007</td>
+              <td>Improve customer satisfaction</td>
+              <td>Product reviews and ratings</td>
+              <td style="font-family:monospace; font-size:11px;">US-006</td>
+              <td style="font-family:monospace; font-size:11px;">TC-007</td>
+              <td><span class="tag tag-teal">Low</span></td>
+              <td><span class="tag tag-gray">Backlog</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGE: STAKEHOLDERS -->
+    <div class="page" id="page-stakeholders">
+      <div class="page-header">
+        <div class="page-title">Stakeholder Register & Analysis</div>
+        <div class="page-sub">Identifies key stakeholders, their influence, interest, and engagement strategy</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Stakeholder Map</div>
+        <div class="stakeholder-grid">
+          <div class="sh-card">
+            <div class="sh-avatar" style="background:#e8f1fb; font-size:20px;">👔</div>
+            <div>
+              <div class="sh-name">Business Owner / Sponsor</div>
+              <div class="sh-role">Project Sponsor · High Influence</div>
+              <div class="sh-influence">
+                <span style="min-width:60px;">Influence</span>
+                <div class="sh-bar"><div class="sh-fill" style="width:95%; background:var(--blue);"></div></div>
+                <span>95%</span>
+              </div>
+              <div class="sh-influence" style="margin-top:4px;">
+                <span style="min-width:60px;">Interest</span>
+                <div class="sh-bar"><div class="sh-fill" style="width:90%; background:var(--teal);"></div></div>
+                <span>90%</span>
+              </div>
+              <div style="margin-top:6px; font-size:11px; color:var(--text2);">Strategy: <b>Manage Closely</b> — Weekly status updates, direct requirement sign-off</div>
+            </div>
+          </div>
+          <div class="sh-card">
+            <div class="sh-avatar" style="background:#e4f5f1; font-size:20px;">💻</div>
+            <div>
+              <div class="sh-name">Development Team Lead</div>
+              <div class="sh-role">Technical Lead · High Influence</div>
+              <div class="sh-influence">
+                <span style="min-width:60px;">Influence</span>
+                <div class="sh-bar"><div class="sh-fill" style="width:80%; background:var(--blue);"></div></div>
+                <span>80%</span>
+              </div>
+              <div class="sh-influence" style="margin-top:4px;">
+                <span style="min-width:60px;">Interest</span>
+                <div class="sh-bar"><div class="sh-fill" style="width:75%; background:var(--teal);"></div></div>
+                <span>75%</span>
+              </div>
+              <div style="margin-top:6px; font-size:11px; color:var(--text2);">Strategy: <b>Collaborate</b> — Daily standups, FRD handoff, query resolution</div>
+            </div>
+          </div>
+          <div class="sh-card">
+            <div class="sh-avatar" style="background:#fef4e0; font-size:20px;">🧪</div>
+            <div>
+              <div class="sh-name">QA / Testing Team</div>
+              <div class="sh-role">Quality Assurance · Medium Influence</div>
+              <div class="sh-influence">
+                <span style="min-width:60px;">Influence</span>
+                <div class="sh-bar"><div class="sh-fill" style="width:55%; background:var(--blue);"></div></div>
+                <span>55%</span>
+              </div>
+              <div class="sh-influence" style="margin-top:4px;">
+                <span style="min-width:60px;">Interest</span>
+                <div class="sh-bar"><div class="sh-fill" style="width:85%; background:var(--teal);"></div></div>
+                <span>85%</span>
+              </div>
+              <div style="margin-top:6px; font-size:11px; color:var(--text2);">Strategy: <b>Keep Informed</b> — Share RTM, acceptance criteria, test scenarios</div>
+            </div>
+          </div>
+          <div class="sh-card">
+            <div class="sh-avatar" style="background:#f0eafa; font-size:20px;">🛍️</div>
+            <div>
+              <div class="sh-name">End Customer (User)</div>
+              <div class="sh-role">Primary End User · Low Influence</div>
+              <div class="sh-influence">
+                <span style="min-width:60px;">Influence</span>
+                <div class="sh-bar"><div class="sh-fill" style="width:30%; background:var(--blue);"></div></div>
+                <span>30%</span>
+              </div>
+              <div class="sh-influence" style="margin-top:4px;">
+                <span style="min-width:60px;">Interest</span>
+                <div class="sh-bar"><div class="sh-fill" style="width:95%; background:var(--teal);"></div></div>
+                <span>95%</span>
+              </div>
+              <div style="margin-top:6px; font-size:11px; color:var(--text2);">Strategy: <b>Monitor</b> — Persona research, surveys, usability testing feedback</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Communication Plan</div>
+        <table>
+          <thead><tr><th>Stakeholder</th><th>Communication Type</th><th>Frequency</th><th>Channel</th></tr></thead>
+          <tbody>
+            <tr><td>Business Owner</td><td>Status report + sign-off</td><td>Weekly</td><td>Email + Meeting</td></tr>
+            <tr><td>Dev Team Lead</td><td>Requirement walkthrough</td><td>Daily standup</td><td>Jira + Slack</td></tr>
+            <tr><td>QA Team</td><td>Test case review</td><td>End of sprint</td><td>Confluence + Email</td></tr>
+            <tr><td>End Customers</td><td>Usability survey</td><td>Per milestone</td><td>Google Forms</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + tab).classList.add('active');
+  const tabs = ['overview','brd','validation','stories','flow','wireframe','sprint','rtm','stakeholders'];
+  const idx = tabs.indexOf(tab);
+  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+}
+function highlightSidebar(el) {
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
